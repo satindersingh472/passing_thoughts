@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import { AddThoughtForm } from './AddThoughtForm';
 import { Thought } from './Thought';
 import { generateId, getNewExpirationTime } from './Utilities';
 
-export default function App() {
+export default function OurApp() {
   const [thoughts, setThoughts] = useState([
     {
       id: generateId(),
@@ -18,16 +17,25 @@ export default function App() {
     },
   ]);
 
+  const addThought = (thoughts) => {
+    setThoughts((prev) => [...prev,thoughts])
+  }
+
+  const removeThought = (thoughToRemove) => {
+    setThoughts((thoughts) => thoughts.filter((thought)=> thought.id !== thoughToRemove))
+  }
+
+
   return (
     <div className="App">
       <header>
         <h1>Passing Thoughts</h1>
       </header>
       <main>
-        <AddThoughtForm />
+        <AddThoughtForm addThought={addThought} />
         <ul className="thoughts">
           {thoughts.map((thought) => (
-            <Thought key={thought.id} thought={thought} />
+            <Thought key={thought.id} thought={thought} removeThought={removeThought} />
           ))}
         </ul>
       </main>
